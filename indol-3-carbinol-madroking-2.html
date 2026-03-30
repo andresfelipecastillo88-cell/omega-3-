@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es" style="background:#010a0a !important;">
+<head>
+<meta name="color-scheme" content="dark">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indol-3-Carbinol — Madroking</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--cyan: #00FFE0;
+--cyan-dim: #00c4ad;
+--cyan-dark: #007a6b;
+--cyan-glow: rgba(0,255,224,0.12);
+--cyan-border: rgba(0,255,224,0.2);
+--cyan-faint: rgba(0,255,224,0.05);
+--bg: #010a0a;
+--bg2: #021212;
+--bg3: #031a1a;
+--text: #e0fffc;
+--text-muted: #2a6b63;
+--danger: #ff6b6b;
+--warning: #ffd166;
+--success: #56C97A;
+--card-border: rgba(0,255,224,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { color-scheme: dark; }
+html { background: #010a0a; }
+@media (prefers-color-scheme: light) {
+html, body { background: #010a0a !important; color: #e0fffc !important; }
+}
+body {
+background: var(--bg) !important;
+color: var(--text);
+font-family: 'Space Grotesk', sans-serif;
+font-size: 16px;
+line-height: 1.7;
+overflow-x: hidden;
+-webkit-text-size-adjust: 100%;
+}
+/* NOISE */
+body::after {
+content: '';
+position: fixed; inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.022'/%3E%3C/svg%3E");
+pointer-events: none; z-index: 1;
+}
+/* ANIMATED BG */
+.bg-orbs {
+position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.orb {
+position: absolute; border-radius: 50%;
+background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+animation: orbFloat linear infinite;
+}
+.orb-1 { width: 600px; height: 600px; top: -200px; left: -150px; animation-duration: 20s; opacity: 0.6; }
+.orb-2 { width: 400px; height: 400px; bottom: -100px; right: -100px; animation-duration: 25s; animation-delay: -8s; opacity: 0.4; }
+.orb-3 { width: 300px; height: 300px; top: 40%; left: 60%; animation-duration: 18s; animation-delay: -4s; opacity: 0.3; }
+@keyframes orbFloat {
+0% { transform: translate(0, 0) scale(1); }
+25% { transform: translate(30px, -40px) scale(1.05); }
+50% { transform: translate(-20px, 30px) scale(0.95); }
+75% { transform: translate(40px, 20px) scale(1.02); }
+100% { transform: translate(0, 0) scale(1); }
+}
+/* SCAN LINE */
+.scan-line {
+position: fixed; top: 0; left: 0; right: 0; height: 2px;
+background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+animation: scanDown 8s linear infinite;
+z-index: 3; opacity: 0.3; pointer-events: none;
+}
+@keyframes scanDown {
+0% { top: -2px; }
+100% { top: 100vh; }
+}
+.container { max-width: 780px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+/* HERO */
+.hero {
+min-height: 100vh;
+display: flex; flex-direction: column;
+justify-content: center; align-items: center;
+text-align: center; position: relative;
+padding: 80px 24px 60px;
+overflow: hidden; z-index: 2;
+}
+/* PARTICLES */
+.particles {
+position: absolute; inset: 0; pointer-events: none;
+}
+.particle {
+position: absolute; width: 2px; height: 2px;
+background: var(--cyan); border-radius: 50%;
+animation: particleFloat linear infinite;
+opacity: 0;
+}
+@keyframes particleFloat {
+0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+10% { opacity: 0.8; }
+90% { opacity: 0.4; }
+100% { transform: translateY(-100px) translateX(var(--drift)); opacity: 0; }
+}
+.hero-eyebrow {
+font-family: 'DM Mono', monospace;
+font-size: 11px; letter-spacing: 4px;
+text-transform: uppercase; color: var(--cyan);
+margin-bottom: 20px;
+opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s;
+text-shadow: 0 0 10px rgba(0,255,224,0.6);
+}
+.hero-tag {
+display: inline-block;
+font-family: 'DM Mono', monospace; font-size: 10px;
+letter-spacing: 3px; text-transform: uppercase;
+color: #010a0a; background: var(--cyan);
+padding: 5px 16px; border-radius: 2px; margin-bottom: 24px;
+opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s;
+box-shadow: 0 0 20px rgba(0,255,224,0.5);
+}
+.hero-title {
+font-family: 'Bebas Neue', sans-serif;
+line-height: 0.85; letter-spacing: 2px;
+opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.hero-title .line1 {
+display: block; color: var(--text);
+font-size: clamp(28px, 5vw, 48px); letter-spacing: 8px;
+font-weight: 400; margin-bottom: 8px;
+}
+.hero-title .line2 {
+display: block; color: var(--cyan);
+font-size: clamp(52px, 12vw, 110px);
+text-shadow: 0 0 30px rgba(0,255,224,0.7), 0 0 60px rgba(0,255,224,0.3), 0 0 100px rgba(0,255,224,0.1);
+animation: fadeUp 0.8s ease forwards 0.4s, glowPulse 3s ease infinite 1.5s;
+}
+.hero-title .line3 {
+display: block; color: var(--text);
+font-size: clamp(20px, 3.5vw, 34px); letter-spacing: 4px;
+opacity: 0.5;
+}
+@keyframes glowPulse {
+0%, 100% { text-shadow: 0 0 30px rgba(0,255,224,0.7), 0 0 60px rgba(0,255,224,0.3); }
+50% { text-shadow: 0 0 50px rgba(0,255,224,1), 0 0 100px rgba(0,255,224,0.5), 0 0 150px rgba(0,255,224,0.2); }
+}
+.hero-subtitle {
+font-size: 16px; color: var(--text-muted);
+max-width: 500px; margin: 24px auto 0; line-height: 1.8;
+opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; font-weight: 400;
+}
+.cta-btn {
+display: inline-flex; align-items: center; gap: 10px;
+background: transparent; color: var(--cyan);
+font-family: 'DM Mono', monospace; font-weight: 500; font-size: 12px;
+padding: 14px 32px; border-radius: 2px;
+text-decoration: none; margin-top: 36px;
+letter-spacing: 2px; text-transform: uppercase;
+transition: all 0.25s ease;
+opacity: 1;
+border: 1px solid var(--cyan);
+position: relative; overflow: hidden;
+box-shadow: 0 0 20px rgba(0,255,224,0.15), inset 0 0 20px rgba(0,255,224,0.03);
+}
+.hero .cta-btn {
+opacity: 0; animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.cta-btn::before {
+content: ''; position: absolute; inset: 0;
+background: var(--cyan); transform: translateX(-100%);
+transition: transform 0.3s ease; z-index: -1;
+}
+.cta-btn:hover { color: #010a0a; box-shadow: 0 0 40px rgba(0,255,224,0.5); }
+.cta-btn:hover::before { transform: translateX(0); }
+.cta-note {
+font-size: 12px; color: var(--text-muted); margin-top: 12px;
+opacity: 0; animation: fadeUp 0.8s ease forwards 1s;
+font-family: 'DM Mono', monospace;
+}
+.scroll-hint {
+position: absolute; bottom: 32px; left: 50%;
+transform: translateX(-50%);
+display: flex; flex-direction: column; align-items: center; gap: 8px;
+color: var(--text-muted); font-size: 10px; letter-spacing: 3px;
+text-transform: uppercase; font-family: 'DM Mono', monospace;
+opacity: 0; animation: fadeUp 0.8s ease forwards 1.2s;
+}
+.scroll-line {
+width: 1px; height: 40px;
+background: linear-gradient(to bottom, var(--cyan), transparent);
+animation: scrollLine 1.5s ease infinite;
+}
+@keyframes scrollLine {
+0% { transform: scaleY(0); transform-origin: top; }
+50% { transform: scaleY(1); transform-origin: top; }
+51% { transform: scaleY(1); transform-origin: bottom; }
+100% { transform: scaleY(0); transform-origin: bottom; }
+}
+section { padding: 80px 0; border-top: 1px solid var(--card-border); position: relative; z-index: 2; }
+.section-label {
+font-family: 'DM Mono', monospace; font-size: 10px;
+letter-spacing: 3px; text-transform: uppercase;
+color: var(--cyan); margin-bottom: 16px;
+}
+.section-title {
+font-family: 'Bebas Neue', sans-serif;
+font-size: clamp(36px, 6vw, 58px);
+line-height: 0.95; color: var(--text); margin-bottom: 28px;
+}
+.section-title em { color: var(--cyan); font-style: normal; }
+.lead { font-size: 16px; color: var(--text-muted); margin-bottom: 36px; line-height: 1.8; }
+.quote-block {
+border-left: 3px solid var(--cyan);
+padding: 20px 28px; background: var(--bg2);
+border-radius: 0 8px 8px 0; margin: 28px 0;
+position: relative; overflow: hidden;
+box-shadow: -4px 0 20px rgba(0,255,224,0.1);
+}
+.quote-block::before {
+content: ''; position: absolute; inset: 0;
+background: linear-gradient(90deg, rgba(0,255,224,0.04) 0%, transparent 60%);
+}
+.quote-text { font-size: 17px; font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.quote-author { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; }
+/* WHAT IS IT */
+.compound-card {
+background: var(--bg2); border: 1px solid var(--cyan-border);
+border-radius: 12px; padding: 32px; margin-bottom: 24px;
+position: relative; overflow: hidden;
+}
+.compound-card::before {
+content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+background: linear-gradient(90deg, var(--cyan), transparent);
+animation: scanH 4s ease infinite;
+}
+@keyframes scanH {
+0% { transform: scaleX(0); transform-origin: left; }
+50% { transform: scaleX(1); transform-origin: left; }
+51% { transform: scaleX(1); transform-origin: right; }
+100% { transform: scaleX(0); transform-origin: right; }
+}
+.compound-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+@media (max-width: 520px) { .compound-grid { grid-template-columns: 1fr; } }
+.compound-point {
+background: var(--bg3); border: 1px solid var(--card-border);
+border-radius: 8px; padding: 16px 18px;
+display: flex; gap: 12px; align-items: flex-start;
+transition: border-color 0.2s;
+}
+.compound-point:hover { border-color: var(--cyan-border); }
+.cp-icon { font-size: 22px; flex-shrink: 0; }
+.cp-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+.cp-text strong { color: var(--text); display: block; margin-bottom: 2px; font-weight: 600; }
+/* SYMPTOMS */
+.symptoms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 28px; }
+@media (max-width: 520px) { .symptoms-grid { grid-template-columns: 1fr; } }
+.symptom-item {
+background: var(--bg2); border: 1px solid rgba(255,107,107,0.12);
+border-radius: 8px; padding: 14px 18px;
+display: flex; gap: 12px; align-items: center;
+transition: all 0.2s; cursor: default;
+position: relative; overflow: hidden;
+}
+.symptom-item::before {
+content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+background: var(--danger); transform: scaleY(0); transform-origin: bottom;
+transition: transform 0.3s ease;
+}
+.symptom-item:hover::before { transform: scaleY(1); }
+.symptom-item:hover { border-color: rgba(255,107,107,0.25); }
+.symptom-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); flex-shrink: 0; box-shadow: 0 0 6px rgba(255,107,107,0.5); }
+.symptom-text { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+.symptom-verdict {
+background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.15);
+border-radius: 8px; padding: 18px 22px; margin-top: 16px;
+font-size: 14px; color: var(--text-muted); line-height: 1.7;
+}
+.symptom-verdict strong { color: var(--danger); font-weight: 700; }
+/* FOODS */
+.foods-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.food-pill {
+display: flex; align-items: center; gap: 8px;
+background: var(--bg2); border: 1px solid var(--cyan-border);
+padding: 10px 18px; border-radius: 50px;
+font-size: 14px; color: var(--text-muted);
+transition: all 0.2s;
+}
+.food-pill:hover { background: var(--cyan-faint); color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,224,0.15); }
+.food-pill span { font-size: 20px; }
+.foods-note {
+background: var(--bg2); border: 1px solid var(--card-border);
+border-radius: 8px; padding: 18px 22px; margin-top: 16px;
+display: flex; gap: 12px; align-items: flex-start;
+font-size: 14px; color: var(--text-muted); line-height: 1.7;
+}
+.foods-note strong { color: var(--cyan); }
+/* PROTOCOL */
+.protocol-card {
+background: var(--bg2); border: 1px solid var(--cyan-border);
+border-radius: 12px; overflow: hidden; margin-bottom: 24px;
+position: relative;
+}
+.protocol-header {
+background: var(--cyan-faint); border-bottom: 1px solid var(--cyan-border);
+padding: 20px 28px; display: flex; align-items: center; gap: 14px;
+}
+.protocol-header-icon { font-size: 28px; }
+.protocol-header-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--cyan); line-height: 1; }
+.protocol-header-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+.protocol-rows { display: flex; flex-direction: column; }
+.protocol-row {
+display: grid; grid-template-columns: 160px 1fr;
+border-bottom: 1px solid var(--card-border); padding: 18px 28px;
+gap: 20px; align-items: center; transition: background 0.2s;
+}
+.protocol-row:last-child { border-bottom: none; }
+.protocol-row:hover { background: var(--cyan-faint); }
+.protocol-key { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.protocol-val { font-size: 15px; color: var(--text); font-weight: 600; }
+.protocol-val span { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--cyan); display: block; line-height: 1; text-shadow: 0 0 10px rgba(0,255,224,0.4); }
+@media (max-width: 500px) { .protocol-row { grid-template-columns: 1fr; gap: 4px; } }
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+.timeline-item {
+display: grid; grid-template-columns: 100px 1fr;
+gap: 0; position: relative;
+}
+.timeline-time {
+padding: 24px 20px 24px 0; text-align: right;
+border-right: 2px solid var(--card-border);
+position: relative; transition: border-color 0.2s;
+}
+.timeline-item:hover .timeline-time { border-color: var(--cyan); }
+.timeline-time::after {
+content: ''; position: absolute; right: -5px; top: 50%;
+transform: translateY(-50%);
+width: 8px; height: 8px; border-radius: 50%;
+background: var(--bg); border: 2px solid var(--cyan-dark);
+transition: all 0.2s;
+}
+.timeline-item:hover .timeline-time::after {
+background: var(--cyan); border-color: var(--cyan);
+box-shadow: 0 0 8px rgba(0,255,224,0.6);
+}
+.time-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--cyan); }
+.time-range { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--text); line-height: 1; }
+.timeline-content { padding: 20px 0 20px 24px; }
+.timeline-title { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.timeline-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+/* FOR WHO */
+.forWho-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 520px) { .forWho-grid { grid-template-columns: 1fr; } }
+.forWho-card {
+background: var(--bg2); border: 1px solid var(--card-border);
+border-radius: 8px; padding: 18px 20px;
+display: flex; gap: 12px; align-items: flex-start;
+transition: border-color 0.2s;
+}
+.forWho-card:hover { border-color: var(--cyan-border); }
+.forWho-icon { font-size: 24px; flex-shrink: 0; }
+.forWho-text { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.forWho-text strong { color: var(--text); display: block; font-weight: 600; margin-bottom: 2px; }
+/* WARNINGS */
+.warnings-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.warning-item {
+background: var(--bg2); border: 1px solid rgba(255,209,102,0.12);
+border-radius: 8px; padding: 16px 20px;
+display: flex; gap: 12px; align-items: flex-start;
+font-size: 14px; color: var(--text-muted); line-height: 1.6;
+transition: border-color 0.2s;
+}
+.warning-item:hover { border-color: rgba(255,209,102,0.25); }
+.warning-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.warning-item strong { color: var(--warning); font-weight: 600; }
+/* CHECKLIST */
+.checklist-container {
+background: var(--bg2); border: 1px solid var(--cyan-border);
+border-radius: 12px; padding: 36px;
+position: relative; overflow: hidden;
+}
+.checklist-container::before {
+content: ''; position: absolute; inset: 0;
+background: radial-gradient(ellipse 60% 50% at 90% 10%, rgba(0,255,224,0.04) 0%, transparent 60%);
+pointer-events: none;
+}
+/* animated corner */
+.checklist-container::after {
+content: ''; position: absolute; top: 0; right: 0;
+width: 60px; height: 60px;
+border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan);
+border-radius: 0 12px 0 0;
+}
+.checklist-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--text); margin-bottom: 4px; }
+.checklist-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+.check-section-label {
+font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+text-transform: uppercase; color: var(--text-muted); margin: 20px 0 10px;
+}
+.check-items { display: grid; gap: 10px; }
+.check-item {
+display: flex; align-items: flex-start; gap: 14px;
+padding: 14px 18px; background: var(--bg3);
+border: 1px solid var(--card-border); border-radius: 8px;
+cursor: pointer; transition: all 0.2s ease; user-select: none;
+}
+.check-item:hover { border-color: var(--cyan-border); }
+.check-item.checked { background: rgba(0,255,224,0.04); border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,255,224,0.08); }
+.check-box {
+width: 20px; height: 20px; border-radius: 3px;
+border: 1px solid var(--cyan-border); flex-shrink: 0;
+display: flex; align-items: center; justify-content: center;
+transition: all 0.2s; margin-top: 2px;
+}
+.check-item.checked .check-box {
+background: var(--cyan); border-color: var(--cyan);
+box-shadow: 0 0 10px rgba(0,255,224,0.5);
+}
+.check-box::after { content: '✓'; font-size: 12px; color: #010a0a; opacity: 0; transition: opacity 0.15s; font-weight: 800; }
+.check-item.checked .check-box::after { opacity: 1; }
+.check-label { font-weight: 600; font-size: 14px; color: var(--text); transition: color 0.2s; line-height: 1.4; margin-bottom: 2px; }
+.check-item.checked .check-label { color: var(--cyan); }
+.check-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.checklist-progress { margin-top: 28px; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.progress-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+.progress-count { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--cyan); text-shadow: 0 0 10px rgba(0,255,224,0.4); }
+.progress-bar { height: 3px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(to right, var(--cyan-dark), var(--cyan)); border-radius: 3px; transition: width 0.4s ease; width: 0%; box-shadow: 0 0 8px rgba(0,255,224,0.5); }
+.progress-verdict { margin-top: 20px; padding: 20px 22px; border-radius: 8px; font-size: 14px; line-height: 1.7; display: none; animation: fadeUp 0.4s ease; }
+.progress-verdict.show { display: block; }
+.verdict-low { background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.18); }
+.verdict-low .verdict-title { color: var(--danger); }
+.verdict-mid { background: rgba(255,209,102,0.06); border: 1px solid rgba(255,209,102,0.18); }
+.verdict-mid .verdict-title { color: var(--warning); }
+.verdict-high { background: rgba(0,255,224,0.04); border: 1px solid var(--cyan-border); }
+.verdict-high .verdict-title { color: var(--cyan); }
+.verdict-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; margin-bottom: 8px; }
+.verdict-body { color: var(--text-muted); }
+/* CALLOUT */
+.callout {
+background: var(--bg2); border: 1px solid var(--card-border);
+border-radius: 8px; padding: 20px 24px; margin: 24px 0;
+display: flex; gap: 14px; align-items: flex-start;
+}
+.callout-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.callout-body { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+.callout-body strong { color: var(--text); font-weight: 600; }
+/* FINAL CTA */
+.final-cta { padding: 80px 0; text-align: center; position: relative; overflow: hidden; z-index: 2; }
+.final-cta-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 9vw, 80px); line-height: 0.92; margin-bottom: 20px; }
+.final-cta-title span { color: var(--cyan); display: block; text-shadow: 0 0 20px rgba(0,255,224,0.5); animation: glowPulse 3s ease infinite; }
+.final-cta-body { font-size: 16px; color: var(--text-muted); max-width: 440px; margin: 0 auto 32px; line-height: 1.8; }
+footer { border-top: 1px solid var(--card-border); padding: 32px 0; text-align: center; position: relative; z-index: 2; }
+.footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 8px; text-shadow: 0 0 10px rgba(0,255,224,0.4); }
+.footer-note { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body><div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+</div>
+<div class="scan-line"></div><section class="hero"><div class="particles" id="particles"></div><div class="hero-eyebrow">MADROKING × MÉTODO CIENCIA SIN HUMO</div><div class="hero-tag">El suplemento que el 99.7% no usa</div><h1 class="hero-title"><span class="line1">INDOL-3</span><span class="line2">CARBINOL</span><span class="line3">La guía completa</span></h1><p class="hero-subtitle">No se trata de eliminar el estrógeno. Se trata de ponerlo en su lugar para que tu cuerpo vuelva a funcionar como hombre.</p><a href="https://chat.whatsapp.com/KWrB61nFJp5Kbc4P8fJfr6" target="_blank" class="cta-btn"><span>💬</span>
+Únete al grupo de WhatsApp — Es gratis
+</a><p class="cta-note">Consejos, tests y manuales como este, todos los días. Sin compromiso.</p><div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 01 — EL COMPUESTO</div><h2 class="section-title">QUÉ ES EL<em> INDOL-3-CARBINOL</em></h2><p class="lead">En términos simples: es un compuesto natural que viene de los vegetales verdes — brócoli, coliflor, repollo — y que ayuda a tu cuerpo a manejar mejor el estrógeno. No lo bloquea. Lo ordena.</p></div><div class="compound-card fade-in"><p style="font-size:15px; color:var(--text-muted); line-height:1.8;">El cuerpo produce dos tipos de estrógeno: uno que cumple funciones necesarias y otro que, en exceso, genera los síntomas que más se asocian con falta de definición, grasa rebelde y bajo rendimiento. El I3C ayuda a que el metabolismo del estrógeno vaya por la ruta correcta — potenciando el "bueno" y reduciendo el impacto del "malo".</p><div class="compound-grid"><div class="compound-point"><div class="cp-icon">🔬</div><div class="cp-text"><strong>Origen natural</strong>Extraído de vegetales crucíferos — brócoli, repollo, col rizada, coliflor.</div></div><div class="compound-point"><div class="cp-icon">⚖️</div><div class="cp-text"><strong>No bloquea, ordena</strong>Redirige el metabolismo del estrógeno hacia rutas menos problemáticas para el cuerpo.</div></div><div class="compound-point"><div class="cp-icon">🏋️</div><div class="cp-text"><strong>Relevancia en fitness</strong>Menos estrógeno dominante significa mejor composición corporal, más definición y mejor entorno hormonal.</div></div><div class="compound-point"><div class="cp-icon">🧪</div><div class="cp-text"><strong>Con respaldo científico</strong>Estudiado por sus efectos en el equilibrio hormonal y en la reducción de grasa rebelde asociada al exceso estrogénico.</div></div></div></div><div class="quote-block fade-in"><p class="quote-text">"No se trata de eliminar el estrógeno, se trata de ponerlo en su lugar para que tu cuerpo vuelva a funcionar como hombre."</p><div class="quote-author">— MADROKING</div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 02 — LAS SEÑALES</div><h2 class="section-title">CÓMO SABER SI EL<em> ESTRÓGENO TE ESTÁ DOMINANDO</em></h2><p class="lead">Esto no es teoría. Son síntomas concretos que la gente siente y ve — y que la mayoría atribuye a otras causas sin saber que el estrógeno elevado está detrás.</p></div><div class="symptoms-grid fade-in"><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Grasa acumulada en el pecho — inicio de ginecomastia</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Grasa en caderas o zona baja del abdomen</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Retención de líquidos — te ves "aguado"</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Sensación de inflamación constante</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Libido baja o erecciones débiles</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Cambios de humor — irritabilidad o bajones sin razón clara</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Dificultad para marcar músculo aunque entrenes bien</div></div><div class="symptom-item"><div class="symptom-dot"></div><div class="symptom-text">Sensación de cuerpo blando a pesar del entrenamiento</div></div></div><div class="symptom-verdict fade-in"><strong>Traducción Madroking:</strong> Te ves menos masculino, más blando y con peor rendimiento — y no es por falta de esfuerzo. Es por un entorno hormonal que no está trabajando a tu favor.
+</div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 03 — LAS FUENTES</div><h2 class="section-title">DÓNDE ESTÁ<em> NATURALMENTE</em></h2><p class="lead">El I3C se encuentra en los vegetales crucíferos. Están al alcance de cualquiera — el problema es que para obtener un efecto real en el equilibrio hormonal, la cantidad que habría que comer es impráctica.</p></div><div class="foods-row fade-in"><div class="food-pill"><span>🥦</span> Brócoli</div><div class="food-pill"><span>🥬</span> Kale (col rizada)</div><div class="food-pill"><span>🥦</span> Coliflor</div><div class="food-pill"><span>🥬</span> Repollo</div><div class="food-pill"><span>🌿</span> Coles de Bruselas</div></div><div class="foods-note fade-in"><span style="font-size:20px; flex-shrink:0;">⚠️</span><div>Para obtener efectos reales sobre el equilibrio hormonal, comer estos vegetales no siempre alcanza — las cantidades necesarias son difíciles de sostener en la práctica. <strong>Por eso se usa suplemento.</strong> La alimentación ayuda, pero no reemplaza una dosis terapéutica concentrada.
+</div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 04 — EL PROTOCOLO</div><h2 class="section-title">DOSIS, HORARIO<em> Y CÓMO TOMARLO</em></h2><p class="lead">No es más, es mejor usado de forma constante. El I3C funciona por acumulación — la consistencia importa más que la dosis alta.</p></div><div class="protocol-card fade-in"><div class="protocol-header"><div class="protocol-header-icon">🧬</div><div><div class="protocol-header-title">PROTOCOLO BASE — I3C</div><div class="protocol-header-sub">Referencia práctica de Madroking</div></div></div><div class="protocol-rows"><div class="protocol-row"><div class="protocol-key">Dosis diaria</div><div class="protocol-val"><span>200 – 400 mg</span>Rango efectivo para equilibrio hormonal</div></div><div class="protocol-row"><div class="protocol-key">Momento</div><div class="protocol-val">Con comida — mañana o almuerzo preferiblemente</div></div><div class="protocol-row"><div class="protocol-key">Forma</div><div class="protocol-val">Extracto estandarizado en cápsula — mayor biodisponibilidad</div></div><div class="protocol-row"><div class="protocol-key">Duración</div><div class="protocol-val">Mínimo 6–8 semanas para ver cambios en composición corporal</div></div><div class="protocol-row"><div class="protocol-key">Criterio de calidad</div><div class="protocol-val">Sin rellenos innecesarios, laboratorio verificable, extracto concentrado</div></div></div></div><div class="callout fade-in"><span class="callout-icon">💡</span><div class="callout-body"><strong>Regla de Madroking sobre marcas:</strong> No compres lo más barato — compra lo que tu cuerpo pueda usar. Busca extracto estandarizado de I3C, buen laboratorio y sin rellenos. La calidad del compuesto determina el resultado, no el precio del frasco.
+</div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 05 — LOS RESULTADOS</div><h2 class="section-title">QUÉ ESPERAR<em> Y CUÁNDO</em></h2><p class="lead">Los resultados son reales pero progresivos. No hace magia si tu alimentación y entrenamiento están mal — pero sobre una base sólida, el impacto es visible.</p></div><div class="timeline fade-in"><div class="timeline-item"><div class="timeline-time"><div class="time-label">Semanas</div><div class="time-range">2–4</div></div><div class="timeline-content"><div class="timeline-title">Primeros cambios visibles</div><p class="timeline-body">Reducción de retención de líquidos, sensación de cuerpo más seco y menos inflamado. Mejora en el estado de ánimo y en los niveles de energía general.</p></div></div><div class="timeline-item"><div class="timeline-time"><div class="time-label">Semanas</div><div class="time-range">6–8</div></div><div class="timeline-content"><div class="timeline-title">Cambios en composición corporal</div><p class="timeline-body">Mejora en la definición muscular, más facilidad para perder la grasa rebelde en zonas asociadas al exceso estrogénico. Mejor equilibrio hormonal percibido.</p></div></div><div class="timeline-item"><div class="timeline-time"><div class="time-label">Semanas</div><div class="time-range">8+</div></div><div class="timeline-content"><div class="timeline-title">Entorno hormonal optimizado</div><p class="timeline-body">Con base sólida de sueño, entrenamiento y nutrición, el entorno hormonal empieza a trabajar a favor — más músculo visible, mejor rendimiento, más facilidad para mantenerse definido.</p></div></div></div><div class="callout fade-in"><span class="callout-icon">⚡</span><div class="callout-body"><strong>El punto clave:</strong> No hace magia si tu alimentación y entrenamiento son basura. El I3C optimiza un entorno que ya está funcionando — no rescata uno que está roto. La base siempre es lo primero.
+</div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 06 — EL PERFIL</div><h2 class="section-title">PARA QUIÉN<em> TIENE MÁS SENTIDO</em></h2><p class="lead">No es para todo el mundo en todo momento. Tiene sentido específico para ciertos perfiles donde el exceso de estrógeno tiene mayor probabilidad de estar afectando la composición corporal.</p></div><div class="forWho-grid fade-in"><div class="forWho-card"><div class="forWho-icon">👨</div><div class="forWho-text"><strong>Hombres +35 / +40</strong>Edad donde el estrógeno empieza a dominar más sobre la testosterona — especialmente sin entrenamiento ni hábitos que lo contrarresten.</div></div><div class="forWho-card"><div class="forWho-icon">🔥</div><div class="forWho-text"><strong>Grasa abdominal o pectoral persistente</strong>Zonas de acumulación típicamente asociadas al exceso estrogénico que no responden bien solo con déficit calórico.</div></div><div class="forWho-card"><div class="forWho-icon">💉</div><div class="forWho-text"><strong>Usuarios de TRT o testosterona exógena</strong>Cuando sube la testosterona, parte se convierte en estrógeno por aromatización — el I3C ayuda a gestionar ese proceso.</div></div><div class="forWho-card"><div class="forWho-icon">👩</div><div class="forWho-text"><strong>Mujeres con dominancia estrogénica</strong>Siempre bajo supervisión médica — pero puede ser una herramienta útil en contextos de desequilibrio hormonal femenino.</div></div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 07 — LAS ADVERTENCIAS</div><h2 class="section-title">LO QUE HAY QUE<em> SABER ANTES</em></h2><p class="lead">Aquí es donde se separan los que hacen las cosas bien de los que no. El I3C es una herramienta — y como toda herramienta, usarla mal tiene consecuencias.</p></div><div class="warnings-list fade-in"><div class="warning-item"><div class="warning-icon">⚠️</div><div><strong>No usar sin control si tienes problemas hormonales diagnosticados.</strong> Si ya hay una patología hormonal de base, el suplemento no reemplaza el tratamiento médico.</div></div><div class="warning-item"><div class="warning-icon">⚠️</div><div><strong>Cuidado si estás en tratamientos médicos hormonales.</strong> Consulta antes de combinarlo con TRT, anticonceptivos u otros moduladores hormonales.</div></div><div class="warning-item"><div class="warning-icon">⚠️</div><div><strong>No sustituye un análisis clínico.</strong> Si no sabes cómo están tus hormonas, no juegues a regularlas. Un análisis de sangre básico es el punto de partida.</div></div><div class="warning-item"><div class="warning-icon">⚠️</div><div><strong>No mezclar "a lo loco" con otros moduladores hormonales</strong> sin entender cómo interactúan — más no siempre es mejor cuando se habla de equilibrio hormonal.</div></div></div><div class="quote-block fade-in"><p class="quote-text">"Si no sabes cómo están tus hormonas, no juegues a regularlas."</p><div class="quote-author">— MADROKING</div></div></div>
+</section><section><div class="container"><div class="fade-in"><div class="section-label">// 08 — EL DIAGNÓSTICO</div><h2 class="section-title">¿TIENE SENTIDO<em> PARA TI?</em></h2><p class="lead">Marca lo que aplica en tu caso. Esto te va a decir si el I3C es una herramienta relevante para tu momento actual — o si hay algo más urgente que atender primero.</p></div><div class="checklist-container fade-in"><div class="checklist-title">¿EL I3C ES PARA MÍ?</div><p class="checklist-subtitle">Sin filtros — solo para saber si esto tiene sentido en tu contexto actual.</p><div class="check-section-label">// Señales físicas</div><div class="check-items"><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Tengo grasa que no cede en pecho, caderas o abdomen bajo</div><div class="check-desc">A pesar de déficit calórico y entrenamiento, esas zonas no responden bien.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Me veo "aguado" aunque no esté comiendo mal</div><div class="check-desc">Retención de líquidos que parece no tener relación directa con la sal o el sodio.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Me cuesta marcar músculo aunque entrene bien</div><div class="check-desc">El músculo existe pero está cubierto — la definición no llega aunque el trabajo sea correcto.</div></div></div></div><div class="check-section-label">// Señales hormonales</div><div class="check-items"><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Tengo más de 35 años y siento que mi cuerpo responde diferente</div><div class="check-desc">La relación testosterona/estrógeno empieza a cambiar naturalmente después de los 35.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">He usado testosterona exógena o estoy en TRT</div><div class="check-desc">La aromatización convierte parte de esa testosterona en estrógeno — el I3C ayuda a gestionar ese proceso.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Tengo cambios de humor, libido baja o energía inestable sin causa clara</div><div class="check-desc">Síntomas que a menudo se ignoran pero que pueden tener origen hormonal.</div></div></div></div><div class="check-section-label">// Condiciones para usarlo bien</div><div class="check-items"><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Mi entrenamiento y alimentación tienen una base sólida</div><div class="check-desc">El I3C optimiza un sistema que ya funciona — no rescata uno que está roto.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">No tengo condiciones hormonales diagnosticadas que requieran tratamiento médico</div><div class="check-desc">Si hay patología de base, el suplemento no reemplaza el manejo clínico.</div></div></div><div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div><div class="check-label">Entiendo que esto es una herramienta de optimización, no un atajo</div><div class="check-desc">La consistencia y la paciencia determinan el resultado real.</div></div></div></div><div class="checklist-progress"><div class="progress-header"><span class="progress-label">Relevancia para tu perfil</span><span class="progress-count"><span id="check-count">0</span> / 9</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div><div class="progress-verdict verdict-low" id="verdict-low"><div class="verdict-title">PROBABLEMENTE NO ES TU PRIORIDAD AHORA</div><p class="verdict-body">No hay señales claras de que el exceso estrogénico sea un problema activo en tu caso. Antes de suplementar, vale más reforzar la base — entrenamiento, sueño y nutrición. Si en el futuro aparecen las señales, ya sabes qué herramienta existe.</p></div><div class="progress-verdict verdict-mid" id="verdict-mid"><div class="verdict-title">PODRÍA TENER SENTIDO — PERO INVESTIGA PRIMERO</div><p class="verdict-body">Hay algunas señales presentes pero no suficientes para confirmar que el I3C sea la intervención más urgente. Lo más inteligente: hacer un análisis hormonal básico antes de suplementar para saber exactamente con qué estás lidiando.</p></div><div class="progress-verdict verdict-high" id="verdict-high"><div class="verdict-title">⚡ TIENE MUCHO SENTIDO PARA TU PERFIL</div><p class="verdict-body">Las señales apuntan a que el exceso estrogénico puede estar afectando tu composición corporal y rendimiento. El I3C es una herramienta relevante para tu momento — con la base correcta y la dosis adecuada, puede marcar una diferencia real.</p></div></div></div></div>
+</section><section class="final-cta"><div class="container"><div class="fade-in"><div class="section-label" style="margin-bottom:16px;">// ¿QUIERES MÁS DE ESTO?</div><h2 class="final-cta-title">
+CADA DÍA,
+<span>UN APORTE NUEVO.</span></h2><p class="final-cta-body">Si esta guía te sirvió, imagina tener acceso a contenido como este todos los días directamente en tu WhatsApp. Es completamente gratis y puedes salirte cuando quieras.</p><a href="https://chat.whatsapp.com/KWrB61nFJp5Kbc4P8fJfr6" target="_blank" class="cta-btn" style="opacity:1;animation:none;display:inline-flex;"><span>💬</span>
+Entrar al grupo de WhatsApp — Gratis
+</a><p class="cta-note" style="opacity:1;animation:none;margin-top:16px;">Sin spam. Sin compromiso. Solo ciencia aplicada con sentido común.</p></div></div>
+</section><footer><div class="container"><div class="footer-brand">MADROKING</div><p class="footer-note">Ciencia sin humo. Método sin extremos. Resultados reales.</p></div>
+</footer><script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+// Particles
+const container = document.getElementById('particles');
+for (let i = 0; i < 20; i++) {
+const p = document.createElement('div');
+p.className = 'particle';
+p.style.cssText = `
+left: ${Math.random() * 100}%;
+width: ${Math.random() * 3 + 1}px;
+height: ${Math.random() * 3 + 1}px;
+animation-duration: ${Math.random() * 12 + 8}s;
+animation-delay: ${Math.random() * 10}s;
+--drift: ${(Math.random() - 0.5) * 100}px;
+`;
+container.appendChild(p);
+}
+// Checklist
+function toggleCheck(item) {
+item.classList.toggle('checked');
+updateProgress();
+}
+function updateProgress() {
+const total = document.querySelectorAll('.check-item').length;
+const checked = document.querySelectorAll('.check-item.checked').length;
+const pct = (checked / total) * 100;
+document.getElementById('check-count').textContent = checked;
+document.getElementById('progress-fill').style.width = pct + '%';
+document.querySelectorAll('.progress-verdict').forEach(v => v.classList.remove('show'));
+if (checked === 0) return;
+if (checked <= 3) document.getElementById('verdict-low').classList.add('show');
+else if (checked <= 6) document.getElementById('verdict-mid').classList.add('show');
+else document.getElementById('verdict-high').classList.add('show');
+}
+</script>
+</body>
+</html>
